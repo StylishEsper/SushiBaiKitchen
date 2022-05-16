@@ -1,0 +1,48 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="closeModal()" style="color:rgb(255, 57, 57);">
+          CLOSE
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+    <ion-col>
+      <ion-title style="text-align: center;">Add New Item</ion-title>
+      <ion-row><ion-col style="max-width: 100px;"><p>Japanese:</p></ion-col>
+      <ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updateJapaneseName($event.target.value)"></ion-input></ion-row>
+      <ion-row><ion-col style="max-width: 100px;"><p>English:</p>
+      </ion-col><ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updateEnglishName($event.target.value)"></ion-input></ion-row>
+      <ion-row>
+          <ion-col size="1.8"><p>Image:</p></ion-col>
+          <ion-col><ion-input type="file" (ionChange)="updateImage($event.target.value)" id="file-input"
+          accept="image/png, image/jpeg"></ion-input></ion-col>
+      </ion-row>
+      <ion-row><ion-col style="max-width: 100px;"><p>Price:</p></ion-col>
+      <ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updatePrice($event.target.value)"></ion-input></ion-row>
+      <ion-row><ion-col style="max-width: 100px;"><p>Calories:</p></ion-col>
+      <ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updateCalories($event.target.value)"></ion-input></ion-row>
+      <ion-row><ion-col style="max-width: 100px;"><p>Quantity:</p></ion-col>
+      <ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updateQuantity($event.target.value)"></ion-input></ion-row>
+      <ion-row><ion-col style="max-width: 100px;"><p>Status:</p>
+      </ion-col><ion-select style="border-style: solid; height: 30px; align-self: center;" value="Invisible" (ionChange)="updateStatus($event.target.value)">
+        <ion-select-option value="Purchasable">Purchasable</ion-select-option>
+        <ion-select-option value="Unpurchasable">Unpurchasable</ion-select-option>
+        <ion-select-option value="Invisible">Invisible</ion-select-option>
+      </ion-select></ion-row>
+      <ion-row><ion-col style="max-width: 100px;"><p>Prep Time:</p></ion-col>
+      <ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updatePrepTime($event.target.value)"></ion-input></ion-row>
+      <ion-col>
+        <p>Recipe Description</p>
+        <ion-textarea style="border-style: solid; height: 9%;" (ionChange)="updateRecipeDescription($event.target.value)"></ion-textarea>
+      </ion-col>
+    </ion-col>
+  </ion-grid>
+  <ion-footer style="text-align: center;">
+    <ion-button (click)="confirmItem()">
+      Confirm
+    </ion-button>
+  </ion-footer>
+</ion-content>

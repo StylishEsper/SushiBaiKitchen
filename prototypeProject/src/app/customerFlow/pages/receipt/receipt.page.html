@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-grid style="margin:0;padding:0">
+      <ion-row style="margin:0;padding:0;width:100%">
+        <ion-col size="3" class="ion-text-center"><ion-title style="height:100%;padding:0px;">Your Receipt</ion-title></ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <ion-grid style="margin: auto; width: 50%; text-align: center; font-size: large; font-weight: bold; color: rgb(197, 197, 197);">
+      <ion-row>
+        <ion-col><br/><h2 style="text-align: center; font-weight: bold; border-bottom: solid 4px;">Thank You!<br/><br/></h2></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col><h3 style="text-align: center; font-weight: bold; border-bottom: solid 4px;">Ready in Approx. 15 mins!<br/><br/></h3></ion-col>
+      </ion-row>
+      <div *ngFor="let menuItem of orderService.getAllItems()">
+        <ion-row>
+          <ion-col><br/><ion-text style="text-align: center;">{{menuItem.englishName}}: ${{menuItem.price}}<br/><br/></ion-text></ion-col>
+        </ion-row>
+      </div>
+      <ion-row style="border-top: solid 4px;">
+        <ion-col><ion-text style="text-align: center;"><br/>Tax: ${{transactionService.taxableValue(transactionService.getSubtotal())}}<br/><br/></ion-text></ion-col>      
+      </ion-row>
+      <ion-row>
+        <ion-col><ion-text style="text-align: center;">Total: ${{transactionService.getTotal()}}<br/><br/></ion-text></ion-col>  
+      </ion-row>
+      <ion-row style="border-top: solid 4px;">
+        <ion-col><ion-text style="text-align: center;">Order ID: 102948412<br/><br/><br/></ion-text></ion-col> 
+      </ion-row>
+      <ion-row>
+        <ion-col><ion-button (click)="redirectToHome()">Home</ion-button></ion-col>
+      </ion-row>
+    </ion-grid>
+</div>
+</ion-content>

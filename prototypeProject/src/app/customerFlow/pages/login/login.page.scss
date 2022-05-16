@@ -1,0 +1,32 @@
+.title{
+  font-size: x-large;
+  color: rgb(169, 169, 169);
+  font-weight: bold;
+  text-align: center;
+  margin-top:5%;
+  margin-bottom: 10%;
+}
+
+.invalid-feedback{
+  color:rgb(255, 57, 57);
+}
+
+ion-button.login{
+  --background:#fe2f2f;
+  color:rgb(255, 255, 255);
+  --border-color:black;
+  --border-style:solid;
+  --border-width:1px;
+  --border-radius:16px;
+  width:80%;
+  min-height: 50px;
+}
+
+ion-input{
+  border-style:solid;
+  border-color:white;
+  border-width: 1px;
+  width:80%;
+  margin:auto;
+
+}

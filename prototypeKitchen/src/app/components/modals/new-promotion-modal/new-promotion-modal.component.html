@@ -1,0 +1,38 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="closeModal()" style="color:rgb(255, 57, 57);">
+          CLOSE
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+    <ion-col style="font-size: small;">
+      <ion-title style="text-align: center;">Add New Promotion</ion-title>
+      <ion-row><ion-col style="max-width: 100px;"><p>Description:</p>
+      </ion-col><ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updateDescription($event.target.value)"></ion-input></ion-row>
+      <ion-row><ion-col style="max-width: 100px;"><p>Requirements:</p></ion-col>
+      <ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updateRequirements($event.target.value)"></ion-input></ion-row>
+      <ion-row><ion-col style="max-width: 100px;"><p>Type:</p>
+      </ion-col><ion-select placeholder="Select Type" style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updateDealType($event.target.value)">
+        <ion-select-option value="Percentile">Percentile</ion-select-option>
+        <ion-select-option value="Fixed">Fixed</ion-select-option>
+        <ion-select-option value="Other">Other</ion-select-option>
+      </ion-select></ion-row>
+      <ion-row><ion-col style="max-width: 100px;"><p>Discount Amount:</p></ion-col>
+      <ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updateDiscountAmount($event.target.value)"></ion-input></ion-row>
+      <ion-row><ion-col style="max-width: 100px;"><p>Items Applicable:</p></ion-col>
+      <ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updateItemsApplicable($event.target.value)"></ion-input></ion-row>
+      <ion-row><ion-col style="max-width: 100px;"><p>Limitations:</p></ion-col>
+        <ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updateLimitations($event.target.value)"></ion-input></ion-row>
+    </ion-col>
+  </ion-grid>
+  <ion-footer style="text-align: center;">
+    <br/>
+    <ion-button (click)="confirmAdd()">
+      Confirm
+    </ion-button>
+  </ion-footer>
+</ion-content>

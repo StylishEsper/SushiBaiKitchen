@@ -1,0 +1,366 @@
+<!-- Header -->
+<ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-segment [(ngModel)]="selectedTab">
+          <ion-segment-button value="orders">
+            Orders
+          </ion-segment-button>
+          <ion-segment-button value="inventory">
+            Inventory
+          </ion-segment-button>
+          <ion-segment-button value="menu">
+            Menu
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+      <ion-col size="5">
+      </ion-col>
+      <ion-col size="1">
+        <!--TODO: Header Logged In & Time -->
+        <p>{{ currentDateTime() | date: 'MMMM dd, yyyy' }}</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-header>
+
+<!--#region MAIN CONTENT -->
+  <ion-content>
+
+  <!--#region ORDERS TAB - PETER -->
+    <div *ngIf='selectedTab=="orders"' style="width:100%;height:100%">
+      <ion-grid style="width:100%;height:100%">
+        <ion-row style="height: 100%;">
+          <!-- #region Left Main Column / Incoming Orders -->
+          <ion-col size="5" style="height: 100%; border-style: solid; border-width: 5px 5px 0px 0px; border-color: black; background-color: grey;">
+            <ion-title style="text-align: center;"><b>Incoming Orders</b></ion-title>
+            <ion-row style="height: 5.5%"></ion-row>
+            <ion-row style="text-align: center;">
+              <ion-col class="cell">Customer Name</ion-col>
+              <ion-col class="cell">Order Placed For</ion-col>
+              <ion-col class="cell">Order Items</ion-col>
+            </ion-row>
+            <ion-content style="height: 75%; text-align: center;">
+              <div *ngFor="let order of allOrders">
+                <app-incoming-order [order]="order" (click)="changeSelectedOrder(order)"></app-incoming-order>
+              </div>
+            </ion-content>
+            <!-- #endregion -->
+          </ion-col>
+          <ion-col size="6" style="height: 100%; border-style: solid; border-width: 5px 5px 0px 0px; border-color: black; background-color: grey;">
+            <ion-title style="text-align: center;"><b>Order Summary</b></ion-title>
+            <ion-row>
+              <p>Customer Name:</p><ion-input disabled="true">&nbsp;{{currentSelectedOrder().user.firstName}}&nbsp;{{currentSelectedOrder().user.lastName}}</ion-input>
+              <p>Phone Number:</p> <ion-input [value]="currentSelectedOrder().user.phone" disabled="true"></ion-input>
+              <p>Email Address:</p> <ion-input [value]="currentSelectedOrder().user.email" disabled="true"></ion-input>
+              <p>Order Number:</p> <ion-input [value]="currentSelectedOrder().orderID" disabled="true"></ion-input>
+            </ion-row>
+            <ion-row style="text-align: center;">
+              <ion-col class="cell">Image</ion-col>
+              <ion-col class="cell">Item</ion-col>
+              <ion-col class="cell">QTY</ion-col>
+              <ion-col class="cell">Price Per Item</ion-col>
+              <ion-col class="cell">Subtotals</ion-col>
+            </ion-row>
+            <ion-content style="height: 75%; text-align: center;">
+              <ng-container *ngFor="let o of currentSelectedOrder().orderItems; let i = index">
+                <ion-row>
+                  <ion-col class="cell"><ion-img [src]="currentSelectedOrder().orderItems[i].recipe.recipeImage"></ion-img></ion-col>
+                  <ion-col class="cell">{{o.recipe.recipeName}}</ion-col>
+                  <ion-col class="cell">{{o.orderQuantity}}</ion-col>
+                  <ion-col class="cell">${{o.recipe.recipePrice | number:'1.2-2'}}</ion-col>
+                  <ion-col class="cell">${{o.orderQuantity * o.recipe.recipePrice | number:'1.2-2'}}</ion-col>
+                </ion-row>
+              </ng-container>
+              
+            </ion-content>
+              <ion-card style="height: 12%; text-align: center; background-color: whitesmoke; align-self:flex-end;">
+                <ion-card-content>
+                  <ion-row>
+                    <ion-col class="cell"><b>Additional Notes:</b> <p>{{currentSelectedOrder().orderNotes}}</p></ion-col>
+                    <ion-col></ion-col>
+                    <ion-col>
+                      <ion-button shape="round" style="text-align: center; size: small; font-weight: bold;" color="danger" (click)="rejectConfirmationCreator()">Reject</ion-button>
+                      <ion-button shape="round" style="text-align: center; size: small; font-weight: bold;" color="success" (click)="rejectConfirmationCreator()">Complete</ion-button>
+                    </ion-col>
+                    <ion-col></ion-col>
+                    <ion-col class="cell">
+                      <p>Subtotal: ${{sumSubTotal() | number:'1.2-2'}}</p>
+                    </ion-col> <!-- TO DO!!!! -->
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <!-- #endregion -->
+      <ion-col size="6">
+        <!-- #region Right main column -->
+        <ion-grid>
+          <!-- #region TODO: Order Summary -->
+          <ion-row>
+
+          </ion-row>
+          <!-- #endregion -->
+
+          <!-- #region TODO: Order Summary - Item List -->
+          <ion-row>
+
+          </ion-row>
+          <!-- #endregion -->
+
+          <!-- #region TODO: Order Summary - Receipt-->
+          <ion-row>
+
+          </ion-row>
+          <!-- #endregion -->
+        </ion-grid>
+        <!-- #endregion -->
+      </ion-col>
+    </div>
+  <!--#endregion  -->
+
+  <!--#region INVENTORY TAB - ETHAN -->
+  <!--Currently, I'm going to try to match the example we have on Moqups...dummy data included.-->
+  <!--This is the table in which all of the inventory will be stored.-->
+
+  <!--Debating on changing this to a list instead of a grid, but for now...-->
+
+  <div *ngIf='selectedTab=="inventory"' style="color: white; width: 100%; height: 100%;">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4">
+          <ion-title>Ingredients</ion-title>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Salmon</ion-card-title>
+          </ion-card-header>
+        
+          <ion-card-content>
+            Quantity: 156
+            Last Purchase Date: 09-25-2021
+          </ion-card-content>
+        </ion-card>
+      </ion-row>
+
+      <ion-row>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Carrots</ion-card-title>
+          </ion-card-header>
+        
+          <ion-card-content>
+            Quantity: 127
+            Last Purchase Date: 09-15-2021
+          </ion-card-content>
+        </ion-card>
+      </ion-row>
+        
+      <ion-row>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Rice</ion-card-title>
+          </ion-card-header>
+        
+          <ion-card-content>
+            Quantity: 60kg
+            Last Purchase Date: 09-25-2021
+          </ion-card-content>
+        </ion-card>
+      </ion-row>
+
+      <ion-row>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Seaweed</ion-card-title>
+          </ion-card-header>
+        
+          <ion-card-content>
+            Quantity: 50
+            Last Purchase Date: 10-12-2021
+          </ion-card-content>
+        </ion-card>
+      </ion-row>  
+    </ion-grid>
+
+    <!--Button to change to purchase supplies and view sources of supplies-->
+
+    <ion-button style="text-align: center; width: 100%; font-weight: bold;" (click)="newSupplyCreator()">Purchase / View Sellers</ion-button>
+
+    <!--TODO: Image and title of the inventory item that is currently selected.-->
+
+  </div>
+<!--#endregion -->
+
+  <!--#region MENU TAB - AHMED -->
+    <div *ngIf='selectedTab=="menu"' style="color: black; width: 100%; height: 100%;">
+      <ion-grid style="height: 100%;">
+        <ion-row style="height: 100%;">
+          <ion-col size="3.5" style="border-style: solid; border-width: 5px 5px 0px 0px;" class="menuSection">
+            <ion-title style="text-align: center;">Menu Items</ion-title>
+            <ion-searchbar [(ngModel)]="search" (ngModelChange)="onSearchChange($event)"></ion-searchbar>
+            <ion-row style="text-align: center;">
+              <ion-col class="cell"></ion-col>
+              <ion-col class="cell">Item</ion-col>
+              <ion-col class="cell">Base Price</ion-col>
+            </ion-row>            
+            <ion-content style="height: 81%; text-align: center;">
+              <div *ngFor="let menuItem of allItems">
+                <app-simple-menu-item *ngIf="filtered(menuItem)" [menuItem]="menuItem" (click)="changeSelectedItem(menuItem)"></app-simple-menu-item>
+              </div>
+            </ion-content>
+            <ion-button style="text-align: center; width: 100%; font-weight: bold;" color="success" (click)="newItemCreator()">
+              +
+            </ion-button>
+          </ion-col>
+          <ion-col size="3" style="border-style: solid; border-width: 5px 5px 0px 0px;" class="menuSection">
+            <ion-title style="text-align: center;">Item Details</ion-title>
+            <ion-row><ion-col style="max-width: 100px;"><p>Japanese:</p></ion-col>
+            <ion-input style="border-style: solid; height: 30px; align-self: center;" [value]="currentSelectedItem().name" (ionChange)="updateSelectedItemName($event.target.value)"></ion-input></ion-row>
+            <ion-row><ion-col style="max-width: 100px;"><p>English:</p>
+            </ion-col><ion-input style="border-style: solid; height: 30px; align-self: center;" [value]="currentSelectedItem().englishName" (ionChange)="updateSelectedItemEnglishName($event.target.value)"></ion-input></ion-row>
+            <ion-row><ion-img [src]="currentSelectedItem().image"></ion-img></ion-row>
+            <ion-row>
+              <ion-button style="width: 99%;">
+                <ion-icon lazy="true" slot="start" name="image"></ion-icon>
+                <ion-label>Upload Image</ion-label>
+                <ion-input type="file" (ionChange)="updateSelectedItemImage($event.target.value)" id="file-input"
+                accept="image/png, image/jpeg" style="z-index: 1; opacity: 0; position: absolute; width: 125%;"></ion-input>
+              </ion-button>
+            </ion-row>
+            <ion-row><ion-col style="max-width: 100px;"><p>Price:<br/> ($)</p></ion-col>
+            <ion-input style="border-style: solid; height: 30px; align-self: center;" [value]="currentSelectedItem().price" (ionChange)="updateSelectedItemPrice($event.target.value)"><br/></ion-input></ion-row>
+            <ion-row><ion-col style="max-width: 100px;"><p>Calories:<br/> (kcal)</p></ion-col>
+            <ion-input style="border-style: solid; height: 30px; align-self: center;" [value]="currentSelectedItem().calories" (ionChange)="updateSelectedItemCalories($event.target.value)"><br/></ion-input></ion-row>
+            <ion-row><ion-col style="max-width: 100px;"><p>Quantity:</p></ion-col>
+            <ion-input style="border-style: solid; height: 30px; align-self: center;" [value]="currentSelectedItem().quantity" (ionChange)="updateSelectedItemQuantity($event.target.value)"></ion-input></ion-row>
+            <ion-row><ion-col style="max-width: 100px;"><p>Status:</p>
+            </ion-col><ion-select style="border-style: solid; height: 30px; align-self: center;" [value]="currentSelectedItem().status" (ionChange)="updateSelectedItemStatus($event.target.value)">
+              <ion-select-option value="Purchasable">Purchasable</ion-select-option>
+              <ion-select-option value="Unpurchasable">Unpurchasable</ion-select-option>
+              <ion-select-option value="Invisible">Invisible</ion-select-option>
+            </ion-select></ion-row>
+            <ion-row><ion-col style="max-width: 100px;"><p>Prep Time:</p></ion-col>
+            <ion-input style="border-style: solid; height: 30px; align-self: center;" [value]="currentSelectedItem().prepTime" (ionChange)="updateSelectedItemPrepTime($event.target.value)"></ion-input></ion-row>
+            <ion-col>
+              <ion-text style="font-weight: bold;">Recipe Description:</ion-text>
+              <ion-textarea style="border-style: solid; height: 9%;" [value]="currentSelectedItem(). recipeDescription" (ionChange)="updateSelectedItemRecipeDescription($event.target.value)"></ion-textarea>
+            </ion-col>
+          </ion-col>
+          <ion-col>
+            <ion-row style="height: 50%;">
+              <ion-col style="border-style: solid; border-width: 0px 5px 0px 0px;" class="menuSection">
+                <ion-row>
+                  <ion-col>
+                    <ion-title style="text-align: center;">Ingredient List</ion-title>
+                  </ion-col>
+                  <ion-col>
+                    <ion-button style="font-weight: bold; height: 20px;" color="success" (click)="newIngredientCreator()">
+                      +
+                    </ion-button>
+                  </ion-col>
+                  <ion-col>
+                    <ion-button style="font-weight: bold; height: 20px;" color="danger" (click)="removeLastIngredient()">
+                      -
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+                <ion-row style="text-align: center;">
+                  <ion-col class="cell">Ingredient</ion-col>
+                  <ion-col class="cell">Quantity</ion-col>
+                  <ion-col class="cell">Units</ion-col>
+                </ion-row>
+                <ion-content style="height: 81%; text-align: right;">
+                  <div *ngFor="let i of currentSelectedItem().ingredients">
+                    <ion-row>
+                      <ion-col class="cell">{{i.name}}</ion-col>
+                      <ion-col class="cell">{{i.quantity}}</ion-col>
+                      <ion-col class="cell">{{i.units}}</ion-col>
+                    </ion-row>
+                  </div>
+                </ion-content>
+              </ion-col>          
+              <ion-col style="background-color: white;">
+                <ion-title style="text-align: center;">Analytics</ion-title>
+                <br/>
+                <ion-content  style="height: 89%; text-align: right;">
+                  <ion-row style="font-size: small; text-align: center; height: 33%;">
+                    <ion-col style="border-style: solid; border-width: 1px;">Popularity Ranking:<br/><p style="font-weight: bold; font-size: medium;">{{currentSelectedItem().popularityRanking}}</p></ion-col>
+                    <ion-col style="border-style: solid; border-width: 1px;">Most Often Paired With:<br/><p style="font-weight: bold; font-size: medium;">{{currentSelectedItem().mostOftenPairedWith}}</p></ion-col>
+                  </ion-row>
+                  <ion-row style="font-size: small; text-align: center; height: 33%;">
+                    <ion-col style="border-style: solid; border-width: 1px;">Daily Orders:<br/><p style="font-weight: bold; font-size: medium;">{{currentSelectedItem().dailyOrders}}</p></ion-col>
+                    <ion-col style="border-style: solid; border-width: 1px;">Weekly Orders:<br/><p style="font-weight: bold; font-size: medium;">{{currentSelectedItem().weeklyOrders}}</ion-col>
+                  </ion-row>
+                  <ion-row style="font-size: small; text-align: center; height: 34%;">
+                    <ion-col style="border-style: solid; border-width: 1px;">Daily Gross:<br/><p style="font-weight: bold; font-size: medium;">${{currentSelectedItem().dailyGross}}</p></ion-col>
+                    <ion-col style="border-style: solid; border-width: 1px;">Weekly Gross:<br/><p style="font-weight: bold; font-size: medium;">${{currentSelectedItem().weeklyGross}}</p></ion-col>
+                  </ion-row>
+                </ion-content>
+              </ion-col>
+            </ion-row>
+            <ion-row style="height: 50%;">
+              <ion-col style="border-style: solid; border-width: 5px 0px 0px 0px; background-color: white;">
+                <ion-row>
+                  <ion-col size="7">
+                    <ion-title style="text-align: center;">Applicable Promotions
+                    </ion-title>
+                  </ion-col>
+                  <ion-col size="1.5">
+                    <ion-button style="font-weight: bold; height: 20px;" color="success" (click)="newPromotionCreator()">
+                      +
+                    </ion-button>
+                  </ion-col>
+                  <ion-col size="1.5">
+                    <ion-button style="font-weight: bold; height: 20px;" color="danger" (click)="removeLastPromotion()">
+                      -
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+                <ion-row style="font-size: small; text-align: center;">               
+                  <ion-col style="border-style: solid; border-width: 1px;">Enabled</ion-col>
+                  <ion-col style="border-style: solid; border-width: 1px;">Description</ion-col>
+                  <ion-col style="border-style: solid; border-width: 1px;">Requirements</ion-col>
+                  <ion-col style="border-style: solid; border-width: 1px;">Deal Type</ion-col>
+                  <ion-col style="border-style: solid; border-width: 1px;">Discount Amount</ion-col>
+                  <ion-col style="border-style: solid; border-width: 1px;">Items Applicable</ion-col>
+                  <ion-col style="border-style: solid; border-width: 1px;">Limitations</ion-col>
+                </ion-row>
+                <ion-content style="height: 84%; text-align: right;">
+                  <div *ngFor="let p of currentSelectedItem().promotions">
+                    <ion-row style="font-size: small; text-align: center;">
+                      <ion-col class="cell"><ion-checkbox [checked]="p.enabled" value="b" (ionChange)="updateItemPromotionEnabled(p, !p.enabled)"></ion-checkbox></ion-col>
+                      <ion-col class="cell">{{p.description}}</ion-col>
+                      <ion-col class="cell">{{p.requirements}}</ion-col>
+                      <ion-col class="cell">{{p.dealType}}</ion-col>
+                      <ion-col class="cell">{{p.discountAmount}}</ion-col>
+                      <ion-col class="cell">{{p.itemsApplicable}}</ion-col>
+                      <ion-col class="cell">{{p.limitations}}</ion-col>
+                    </ion-row>
+                  </div>
+                </ion-content>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  <!--#endregion -->
+
+  <!--#region REPORTS TAB - JUGAL -->
+    <div *ngIf='selectedTab=="reports"'>
+      <!-- Show inventory sales within a time period. -->
+      <!-- Show the most popular/trending items -->
+      <!-- Show number of customers -->
+      <!-- Show inventory used -->
+      <ion-title>reports</ion-title>
+    </div>
+  <!--#endregion -->
+
+<!-- #endregion -->
+</ion-content>

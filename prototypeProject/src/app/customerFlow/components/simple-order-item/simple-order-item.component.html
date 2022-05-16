@@ -1,0 +1,13 @@
+<ion-grid style="width:100%; border-bottom:solid 1px #727272; border-top:solid 1px #727272">
+  <ion-row style="font-size: larger;">
+    <ion-col size="2">
+      {{quantity}}
+    </ion-col>
+    <ion-col size="6">
+      - {{menuItem.name}}
+    </ion-col>
+    <ion-col size="4" style="text-align: right;">
+      ${{roundValue(menuItem.price*quantity)}}
+    </ion-col>
+  </ion-row>
+</ion-grid>

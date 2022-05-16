@@ -1,0 +1,27 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="closeModal()" style="color:rgb(255, 57, 57);">
+          CLOSE
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+    <ion-col>
+      <ion-title style="text-align: center;">Add New Ingredient</ion-title>
+      <ion-row><ion-col style="max-width: 100px;"><p>Name:</p></ion-col>
+      <ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updateName($event.target.value)"></ion-input></ion-row>
+      <ion-row><ion-col style="max-width: 100px;"><p>Quantity:</p>
+      </ion-col><ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updateQuantity($event.target.value)"></ion-input></ion-row>
+      <ion-row><ion-col style="max-width: 100px;"><p>Units:</p></ion-col>
+      <ion-input style="border-style: solid; height: 30px; align-self: center;" (ionChange)="updateUnits($event.target.value)"></ion-input></ion-row>
+    </ion-col>
+  </ion-grid>
+  <ion-footer style="text-align: center;">
+    <ion-button (click)="confirmAdd()">
+      Confirm
+    </ion-button>
+  </ion-footer>
+</ion-content>

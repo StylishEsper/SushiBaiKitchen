@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar style="text-align: center;">
+    <ion-title style="font-weight: bold;">Confirm Order</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-grid style="width:100%">
+  <!-- <ion-row *ngFor="let menuItem of orderService.getAllItems(); index as i" >
+    <ion-col size="12"><app-simple-order-item [menuItem]="menuItem" [quantity]="orderService.getItemQuantity(i)" (click)="this.viewItem(menuItem,orderService.getItemQuantity(i))"></app-simple-order-item></ion-col>
+  </ion-row> -->
+  <ion-row>
+    <ion-col>
+      <div id="container">
+
+        <app-stripe-payment></app-stripe-payment>
+
+     </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12" style="text-align: center;padding-top:32px">
+      <ion-title>Sub-Total: ${{this.roundValue(transactionService.getSubtotal())}}</ion-title>
+    </ion-col>
+    <ion-col size="12" style="text-align: center;">
+      <ion-title>Taxable: ${{transactionService.taxableValue(transactionService.getSubtotal())}}</ion-title>
+    </ion-col>
+    <!-- <ion-col size="12" style="text-align: center;">
+      <ion-title>Delivery Fee: ${{transactionService.getDeliveryFee()}}</ion-title>
+    </ion-col> -->
+    <ion-col size="12" style="text-align: center;">
+      <ion-title>Total: ${{transactionService.getTotal()}}</ion-title>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12" style="text-align: center;">
+      <ion-button (click)="cancelOrder()">
+        Cancel Order
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
